@@ -799,5 +799,5 @@
 			"revisionTime": "2018-03-01T11:27:09Z"
 		}
 	],
-	"rootPath": "github.com/wrouesnel/postgres_exporter/tools"
+	"rootPath": "github.com/pusher/postgres_exporter/tools"
 }

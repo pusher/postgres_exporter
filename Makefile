@@ -10,7 +10,7 @@ GO_SRC := $(shell find . -name '*.go' ! -path '*/vendor/*' ! -path 'tools/*' ! -
 GO_DIRS := $(shell find . -type d -name '*.go' ! -path '*/vendor/*' ! -path 'tools/*' ! -path 'bin/*' ! -path 'release/*' )
 GO_PKGS := $(shell go list ./... | grep -v '/vendor/')
 
-CONTAINER_NAME ?= wrouesnel/postgres_exporter:latest
+CONTAINER_NAME ?= pusher/postgres_exporter:latest
 BINARY := $(shell basename $(shell pwd))
 VERSION ?= $(shell git describe --dirty 2>/dev/null)
 VERSION_SHORT ?= $(shell git describe --abbrev=0 2>/dev/null)

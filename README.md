@@ -1,7 +1,3 @@
-[![Build Status](https://travis-ci.org/wrouesnel/postgres_exporter.svg?branch=master)](https://travis-ci.org/wrouesnel/postgres_exporter)
-[![Coverage Status](https://coveralls.io/repos/github/wrouesnel/postgres_exporter/badge.svg?branch=master)](https://coveralls.io/github/wrouesnel/postgres_exporter?branch=master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/wrouesnel/postgres_exporter)](https://goreportcard.com/report/github.com/wrouesnel/postgres_exporter)
-
 # PostgreSQL Server Exporter
 
 Prometheus exporter for PostgreSQL server metrics.
@@ -13,7 +9,7 @@ This package is available for Docker:
 # Start an example database
 docker run --net=host -it --rm -e POSTGRES_PASSWORD=password postgres
 # Connect to it
-docker run --net=host -e DATA_SOURCE_NAME="postgresql://postgres:password@localhost:5432/?sslmode=disable" wrouesnel/postgres_exporter
+docker run --net=host -e DATA_SOURCE_NAME="postgresql://postgres:password@localhost:5432/?sslmode=disable" pusher/postgres_exporter
 ```
 
 ## Building and running
@@ -22,8 +18,8 @@ The build system is based on [Mage](https://magefile.org)
 
 The default make file behavior is to build the binary:
 ```
-$ go get github.com/wrouesnel/postgres_exporter
-$ cd ${GOPATH-$HOME/go}/src/github.com/wrouesnel/postgres_exporter
+$ go get github.com/pusher/postgres_exporter
+$ cd ${GOPATH-$HOME/go}/src/github.com/pusher/postgres_exporter
 $ go run mage.go
 $ export DATA_SOURCE_NAME="postgresql://login:password@hostname:port/dbname"
 $ ./postgres_exporter <flags>
@@ -31,7 +27,7 @@ $ ./postgres_exporter <flags>
 
 To build the dockerfile, run `go run mage.go docker`.
 
-This will build the docker image as `wrouesnel/postgres_exporter:latest`. This
+This will build the docker image as `pusher/postgres_exporter:latest`. This
 is a minimal docker image containing *just* postgres_exporter. By default no SSL
 certificates are included, if you need to use SSL you should either bind-mount
 `/etc/ssl/certs/ca-certificates.crt` or derive a new image containing them.
