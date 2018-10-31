@@ -195,47 +195,6 @@ var builtinMetricMaps = map[string]map[string]ColumnMapping{
 		"granted": {LABEL, "Whether the lock is waiting of not", nil, nil},
 		"count":   {GAUGE, "Number of locks", nil, nil},
 	},
-	"pg_stat_replication": {
-		"procpid":          {DISCARD, "Process ID of a WAL sender process", nil, semver.MustParseRange("<9.2.0")},
-		"pid":              {DISCARD, "Process ID of a WAL sender process", nil, semver.MustParseRange(">=9.2.0")},
-		"usesysid":         {DISCARD, "OID of the user logged into this WAL sender process", nil, nil},
-		"usename":          {DISCARD, "Name of the user logged into this WAL sender process", nil, nil},
-		"application_name": {DISCARD, "Name of the application that is connected to this WAL sender", nil, nil},
-		"client_addr":      {LABEL, "IP address of the client connected to this WAL sender. If this field is null, it indicates that the client is connected via a Unix socket on the server machine.", nil, nil},
-		"client_hostname":  {DISCARD, "Host name of the connected client, as reported by a reverse DNS lookup of client_addr. This field will only be non-null for IP connections, and only when log_hostname is enabled.", nil, nil},
-		"client_port":      {DISCARD, "TCP port number that the client is using for communication with this WAL sender, or -1 if a Unix socket is used", nil, nil},
-		"backend_start": {DISCARD, "with time zone	Time when this process was started, i.e., when the client connected to this WAL sender", nil, nil},
-		"backend_xmin":             {DISCARD, "The current backend's xmin horizon.", nil, nil},
-		"state":                    {LABEL, "Current WAL sender state", nil, nil},
-		"sent_location":            {DISCARD, "Last transaction log position sent on this connection", nil, semver.MustParseRange("<10.0.0")},
-		"write_location":           {DISCARD, "Last transaction log position written to disk by this standby server", nil, semver.MustParseRange("<10.0.0")},
-		"flush_location":           {DISCARD, "Last transaction log position flushed to disk by this standby server", nil, semver.MustParseRange("<10.0.0")},
-		"replay_location":          {DISCARD, "Last transaction log position replayed into the database on this standby server", nil, semver.MustParseRange("<10.0.0")},
-		"sent_lsn":                 {DISCARD, "Last transaction log position sent on this connection", nil, semver.MustParseRange(">=10.0.0")},
-		"write_lsn":                {DISCARD, "Last transaction log position written to disk by this standby server", nil, semver.MustParseRange(">=10.0.0")},
-		"flush_lsn":                {DISCARD, "Last transaction log position flushed to disk by this standby server", nil, semver.MustParseRange(">=10.0.0")},
-		"replay_lsn":               {DISCARD, "Last transaction log position replayed into the database on this standby server", nil, semver.MustParseRange(">=10.0.0")},
-		"sync_priority":            {DISCARD, "Priority of this standby server for being chosen as the synchronous standby", nil, nil},
-		"sync_state":               {DISCARD, "Synchronous state of this standby server", nil, nil},
-		"slot_name":                {LABEL, "A unique, cluster-wide identifier for the replication slot", nil, semver.MustParseRange(">=9.2.0")},
-		"plugin":                   {DISCARD, "The base name of the shared object containing the output plugin this logical slot is using, or null for physical slots", nil, nil},
-		"slot_type":                {DISCARD, "The slot type - physical or logical", nil, nil},
-		"datoid":                   {DISCARD, "The OID of the database this slot is associated with, or null. Only logical slots have an associated database", nil, nil},
-		"database":                 {DISCARD, "The name of the database this slot is associated with, or null. Only logical slots have an associated database", nil, nil},
-		"active":                   {DISCARD, "True if this slot is currently actively being used", nil, nil},
-		"active_pid":               {DISCARD, "Process ID of a WAL sender process", nil, nil},
-		"xmin":                     {DISCARD, "The oldest transaction that this slot needs the database to retain. VACUUM cannot remove tuples deleted by any later transaction", nil, nil},
-		"catalog_xmin":             {DISCARD, "The oldest transaction affecting the system catalogs that this slot needs the database to retain. VACUUM cannot remove catalog tuples deleted by any later transaction", nil, nil},
-		"restart_lsn":              {DISCARD, "The address (LSN) of oldest WAL which still might be required by the consumer of this slot and thus won't be automatically removed during checkpoints", nil, nil},
-		"pg_current_xlog_location": {DISCARD, "pg_current_xlog_location", nil, nil},
-		"pg_current_wal_lsn":       {DISCARD, "pg_current_xlog_location", nil, semver.MustParseRange(">=10.0.0")},
-		"pg_xlog_location_diff":    {GAUGE, "Lag in bytes between master and slave", nil, semver.MustParseRange(">=9.2.0 <10.0.0")},
-		"pg_wal_lsn_diff":          {GAUGE, "Lag in bytes between master and slave", nil, semver.MustParseRange(">=10.0.0")},
-		"confirmed_flush_lsn":      {DISCARD, "LSN position a consumer of a slot has confirmed flushing the data received", nil, nil},
-		"write_lag":                {DISCARD, "Time elapsed between flushing recent WAL locally and receiving notification that this standby server has written it (but not yet flushed it or applied it). This can be used to gauge the delay that synchronous_commit level remote_write incurred while committing if this server was configured as a synchronous standby.", nil, semver.MustParseRange(">=10.0.0")},
-		"flush_lag":                {DISCARD, "Time elapsed between flushing recent WAL locally and receiving notification that this standby server has written and flushed it (but not yet applied it). This can be used to gauge the delay that synchronous_commit level remote_flush incurred while committing if this server was configured as a synchronous standby.", nil, semver.MustParseRange(">=10.0.0")},
-		"replay_lag":               {DISCARD, "Time elapsed between flushing recent WAL locally and receiving notification that this standby server has written, flushed and applied it. This can be used to gauge the delay that synchronous_commit level remote_apply incurred while committing if this server was configured as a synchronous standby.", nil, semver.MustParseRange(">=10.0.0")},
-	},
 	"pg_stat_activity": {
 		"datname":         {LABEL, "Name of this database", nil, nil},
 		"state":           {LABEL, "connection state", nil, semver.MustParseRange(">=9.2.0")},
@@ -277,35 +236,6 @@ var queryOverrides = map[string][]OverrideQuery{
 			  GROUP BY database, lower(mode), granted
 			) AS tmp2
 			ON tmp.mode=tmp2.mode and pg_database.oid = tmp2.database ORDER BY 1`,
-		},
-	},
-
-	"pg_stat_replication": {
-		{
-			semver.MustParseRange(">=10.0.0"),
-			`
-			SELECT *,
-				(case pg_is_in_recovery() when 't' then null else pg_current_wal_lsn() end) AS pg_current_wal_lsn,
-				(case pg_is_in_recovery() when 't' then null else pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn)::float end) AS pg_wal_lsn_diff
-			FROM pg_stat_replication
-			`,
-		},
-		{
-			semver.MustParseRange(">=9.2.0 <10.0.0"),
-			`
-			SELECT *,
-				(case pg_is_in_recovery() when 't' then null else pg_current_xlog_location() end) AS pg_current_xlog_location,
-				(case pg_is_in_recovery() when 't' then null else pg_xlog_location_diff(pg_current_xlog_location(), replay_location)::float end) AS pg_xlog_location_diff
-			FROM pg_stat_replication
-			`,
-		},
-		{
-			semver.MustParseRange("<9.2.0"),
-			`
-			SELECT *,
-				(case pg_is_in_recovery() when 't' then null else pg_current_xlog_location() end) AS pg_current_xlog_location
-			FROM pg_stat_replication
-			`,
 		},
 	},
 
@@ -707,8 +637,8 @@ type Exporter struct {
 // NewExporter returns a new PostgreSQL exporter for the provided DSN.
 func NewExporter(dsn string, disableDefaultMetrics bool, userQueriesPath string) *Exporter {
 	return &Exporter{
-		builtinMetricMaps: builtinMetricMaps,
-		dsn:               dsn,
+		builtinMetricMaps:     builtinMetricMaps,
+		dsn:                   dsn,
 		disableDefaultMetrics: disableDefaultMetrics,
 		userQueriesPath:       userQueriesPath,
 		duration: prometheus.NewGauge(prometheus.GaugeOpts{
